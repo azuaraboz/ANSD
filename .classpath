@@ -2,5 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Admin/.m2/repository/com/orientechnologies/orientdb-core/3.0.0RC1/orientdb-core-3.0.0RC1.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.orientechnologies"/>
+			<attribute name="maven.artifactId" value="orientdb-core"/>
+			<attribute name="maven.version" value="3.0.0RC1"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
