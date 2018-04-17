@@ -100,20 +100,20 @@
        </h2>
        <% MovieStar ms = (MovieStar)request.getAttribute("StarToEdit"); %>
        <form action="/OrientDBClient3/update" method="post">
-       <input type="hidden" value="<% out.print(ms.StarID); %>">
+       <input type="hidden" value="<% out.print(ms.StarID); %>" name="StarID">
        <table>
        <tr>
        <td><label>Star Name:</label></td>
-       <td><input type="text" name="StarName" value="<% out.print(ms.Name); %>"></td>
+       <td><input type="text" name="Name" value="<% out.print(ms.Name); %>"></td>
        </tr>
        <tr>
        <td><label>Address:</label></td>
-       <td><input type="text" name="StarAddress" value="<% out.print(ms.Address); %>"></td>
+       <td><input type="text" name="Address" value="<% out.print(ms.Address); %>"></td>
        </tr>
        <tr>
        <td><label>Gender:</label></td>
        <td>
-       <select name="StarGender">
+       <select name="Gender">
        <option value="null">------------ Select ------------</option>
        	<option value="M">Male</option>
        	<option value="F">Female</option>
@@ -123,7 +123,7 @@
        </tr>
        <tr>
        <td><label>Date of Birth:</label></td>
-       <td><input type="text" name="StarBD" value="<% out.print(ms.BirthDate); %>"><br /></td>
+       <td><input type="text" name="BirthDate" value="<% out.print(ms.BirthDate); %>"><br /></td>
        </tr>
        <tr>
        <td>

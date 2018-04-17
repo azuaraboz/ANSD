@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
+import com.orientechnologies.orient.core.metadata.function.OFunction;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
@@ -77,7 +78,7 @@ public class ClientServlet extends HttpServlet {
 	{
 		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
-		 String query = "select from MovieStar";
+		 String query = "select * from MovieStar";
 		 OResultSet rs = db.query(query);
 		 ArrayList result = new ArrayList();
 		 while(rs.hasNext())
@@ -164,6 +165,7 @@ public class ClientServlet extends HttpServlet {
 			 ms.Address = item.getProperty("Address");
 			 ms.Gender = item.getProperty("Gender");
 			 ms.BirthDate = item.getProperty("BirthDate").toString();
+			 ms.StarID = item.getProperty("StarID");
 			 
 		 }
 		 db.close();
@@ -182,15 +184,18 @@ public class ClientServlet extends HttpServlet {
 	}
 	private void EditMovieStar(HttpServletRequest request,HttpServletResponse response)
 	{
-		 String SID = request.getParameter("StarID").toString();
+		 String SID = request.getParameter("StarID");
+		 String Name = request.getParameter("Name");
+		 String Address = request.getParameter("Address");
+		 String BirthDate = request.getParameter("BirthDate");
 		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
 		 
-		 String query = "UPDATE MovieStar SET Name = "+ request.getParameter("Name")+","
-		 +"Address = "+ request.getParameter("Address")+","+"BirthDate = "
-				 + request.getParameter("BirthDate") + "WHERE StarID = " + SID ;
-		 
+		 String query = "Update MovieStar set name = \"" + Name +"\" UPSERT Where StarID = \"" + SID +"\"" ;
 		 db.command(query);
+		 	
+		 db.close();
+		 orient.close();
 		 
 		 try {
 				response.sendRedirect("/OrientDBClient3");
@@ -210,6 +215,8 @@ public class ClientServlet extends HttpServlet {
 		 String query = "DELETE VERTEX MovieStar WHERE StarID =  " + SID;
 		 
 		 db.command(query);
+		 db.close();
+		 orient.close();
 		 try {
 				response.sendRedirect("/OrientDBClient3");
 			} catch (IOException e) {
