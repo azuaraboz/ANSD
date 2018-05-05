@@ -27,6 +27,19 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 @WebServlet("/ClientServlet")
 public class ClientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private OrientDB orient;
+	private ODatabaseSession db;
+	
+	private void connectToDB() {
+		orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		db =  orient.open("Movies","root","root12345");
+	}
+	
+	private void closeConnectionToDB() {
+		db.close();
+		orient.close();
+	}
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -76,8 +89,7 @@ public class ClientServlet extends HttpServlet {
 	}
 	private void listMovieStars(HttpServletRequest request, HttpServletResponse response)
 	{
-		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		connectToDB();
 		 String query = "select * from MovieStar";
 		 OResultSet rs = db.query(query);
 		 ArrayList result = new ArrayList();
@@ -94,8 +106,7 @@ public class ClientServlet extends HttpServlet {
 			 result.add(ms);
 		 }
 		 
-		 db.close();
-		 orient.close();
+		 closeConnectionToDB();
 		request.setAttribute("ListOfMovies", result);
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("ListOfMovies.jsp");
 	    try {
@@ -121,8 +132,7 @@ public class ClientServlet extends HttpServlet {
 	}
 	private void AddNewStar(HttpServletRequest request,HttpServletResponse response)
 	{
-		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 connectToDB();
 		 
 		 String Name = request.getParameter("StarName");
 		 String Address = request.getParameter("StarAddress");
@@ -152,8 +162,7 @@ public class ClientServlet extends HttpServlet {
 	private void EditMovieStarForm(HttpServletRequest request,HttpServletResponse response)
 	{
 		 String SID = (request.getParameter("StarID")).toString();
-		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 connectToDB();
 		 String query = "SELECT FROM MovieStar WHERE StarID = "+ SID ;
 		 
 		 OResultSet rs = db.query(query);
@@ -168,8 +177,7 @@ public class ClientServlet extends HttpServlet {
 			 ms.StarID = item.getProperty("StarID");
 			 
 		 }
-		 db.close();
-		 orient.close();
+		 closeConnectionToDB();
 		request.setAttribute("StarToEdit", ms);
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("MovieStarEdit.jsp");
 	    try {
@@ -188,14 +196,12 @@ public class ClientServlet extends HttpServlet {
 		 String Name = request.getParameter("Name");
 		 String Address = request.getParameter("Address");
 		 String BirthDate = request.getParameter("BirthDate");
-		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 connectToDB();
 		 
 		 String query = "Update MovieStar set name = \"" + Name +"\" UPSERT Where StarID = \"" + SID +"\"" ;
 		 db.command(query);
 		 	
-		 db.close();
-		 orient.close();
+		 closeConnectionToDB();
 		 
 		 try {
 				response.sendRedirect("/OrientDBClient3");
@@ -209,14 +215,12 @@ public class ClientServlet extends HttpServlet {
 	private void deleteMovieStar(HttpServletRequest request,HttpServletResponse response)
 	{
 		String SID = request.getParameter("StarID").toString();
-		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 connectToDB();
 		 
 		 String query = "DELETE VERTEX MovieStar WHERE StarID =  " + SID;
 		 
 		 db.command(query);
-		 db.close();
-		 orient.close();
+		 closeConnectionToDB();
 		 try {
 				response.sendRedirect("/OrientDBClient3");
 			} catch (IOException e) {
