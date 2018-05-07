@@ -1,10 +1,14 @@
-<%@page import="OrientDBClient.MovieStar"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="OrientDBClient.Movie"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<link href="WebContent/css/Style.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 		
 			body {
@@ -77,10 +81,10 @@
 			}
 		
 		</style>
-<title>Insert title here</title>
+	
 </head>
 <body>
-	<header id="header">
+<header id="header">
 			<div class="innertube">
 				<h1>The Movies DataBase</h1><br />
 				<h7>The right place to know all about Movies!!!!!</h7>
@@ -93,48 +97,36 @@
 				<div id="content">
 					<div class="innertube">
 	<h2>
-            <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
+            <a href="/OrientDBClient3/newMovieForm">Add New Movie</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3">List All Movie Stars</a>
+            <a href="/OrientDBClient3/MoviesList">List All Movies</a>
              
        </h2>
-       <% MovieStar ms = (MovieStar)request.getAttribute("StarToEdit"); %>
-       <form action="/OrientDBClient3/update" method="post">
-       <input type="hidden" value="<% out.print(ms.StarID); %>" name="StarID">
-       <table>
-       <tr>
-       <td><label>Star Name:</label></td>
-       <td><input type="text" name="Name" value="<% out.print(ms.Name); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Address:</label></td>
-       <td><input type="text" name="Address" value="<% out.print(ms.Address); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Gender:</label></td>
-       <td>
-       <select name="Gender">
-       <option value="null">------------ Select ------------</option>
-       	<option value="M">Male</option>
-       	<option value="F">Female</option>
-       </select>
+<table border="1" cellpadding="5">
+<tr>
+	<th style="display:none;">StarID</th>
+	<th>Title</th>
+	<th>Genre</th>
+	<th>Year</th>
+	<th>Length</th>
+	<th>Actions</th>
+</tr>
+   <% 
+   ArrayList m = (ArrayList)request.getAttribute("ListOfMovies");  
+   for (int i = 0; i < m.size(); i++) { 
+	   Movie ms = (Movie)m.get(i); %>  
        
-       </td>
-       </tr>
        <tr>
-       <td><label>Date of Birth:</label></td>
-       <td><input type="text" name="BirthDate" value="<% out.print(ms.BirthDate); %>"><br /></td>
+       <td><% out.print(ms.Title); %></td>
+       <td><% out.print(ms.Genre); %></td>
+       <td><% out.print(ms.Year); %></td>
+       <td><% out.print(ms.Length); %></td>
+       <td><a href="/OrientDBClient3/MovieDetail?Title='<% out.print(ms.Title);%>'" id = "DetailLink">Detail</a> | <a href="#"> Edit</a> | <a href="/OrientDBClient3/DeleteMovie?Title='<% out.print(ms.Title);%>'" id="DeleteLink"> Delete</a></td>
        </tr>
-       <tr>
-       <td>
-       </td>
-       <td>
-       <input type="Submit" value="Edit Movie Star ">
-       </td>
-       </tr>
-       </table>
-       </form>
-
+       <!-- close the loop -->
+   <% } %>
+   <!-- close table -->
+   </table>
 					</div>
 				</div>
 			</main>
@@ -143,19 +135,20 @@
 				<div class="innertube">
 					<h3>Left heading</h3>
 					<ul>
-						<li><a href="#">List of movies</a></li>
+					<li><a href="#">List of movies</a></li>
 						<li><a href="#">List of Movie Stars</a></li>
-						
 					</ul>
-			</div>
+					
+				</div>
 			</nav>
 		
 		</div>
 		
 		<footer id="footer">
 			<div class="innertube">
-<!-- 				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
+				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
 			</div>
 		</footer>
 </body>
 </html>
+    

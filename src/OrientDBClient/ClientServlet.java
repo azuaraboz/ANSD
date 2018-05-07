@@ -43,23 +43,44 @@ public class ClientServlet extends HttpServlet {
 		String action = request.getServletPath();
 		
 		switch (action) {
+		case "/MoviesList":
+			ListOfMovies(request,response);
+			break;
+		case "/newMovieForm":
+			AddNewMovie(request,response);
+			break;
         case "/newMovieStarForm":
         	AddNewMovieStar(request,response);
             break;
         case "/insert":
             AddNewStar(request,response);
             break;
+        case "/insertMovie":
+        	insertNewMovie(request,response);
+        	break;
+        case "/MovieDetail":
+        	MovieDetail(request,response);
+        	break;
         case "/delete":
         	deleteMovieStar(request,response);
             break;
+        case "/DeleteMovie":
+        	deleteMovie(request,response);
+        	break;
         case "/edit":
         	EditMovieStarForm(request,response);
             break;
         case "/update":
         	EditMovieStar(request,response);
             break;
-        default:
+        case "/Detail":
+        	MovieDetail(request,response);
+        	break;
+        case "/ListOfStars":
         	listMovieStars(request, response);
+        	break;
+        default:
+        	indexPage(request,response);
             break;
         }
 		
@@ -74,6 +95,52 @@ public class ClientServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private void indexPage(HttpServletRequest request,HttpServletResponse response)
+	{
+		RequestDispatcher dispatcher = request.getRequestDispatcher("Index.jsp");
+	    try {
+			dispatcher.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		
+	}
+	
+	private void ListOfMovies(HttpServletRequest request,HttpServletResponse response) {
+		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 String query = "select * from Movie";
+		 OResultSet rs = db.query(query);
+		 ArrayList result = new ArrayList();
+		 while(rs.hasNext())
+		 {
+			 OResult item = rs.next();
+			 String Title = item.getProperty("Title");
+			 String Genre = item.getProperty("Genre");
+			 int Year = item.getProperty("Year");
+			 int Length = item.getProperty("Length");
+			 
+			 Movie m = new Movie(Title,Genre,Year,Length);
+			 result.add(m);
+		 }
+		 
+		 db.close();
+		 orient.close();
+		request.setAttribute("ListOfMovies", result);
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("MoviesList.jsp");
+	    try {
+			dispatcher.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	        
+		 	
+	}
+	
 	private void listMovieStars(HttpServletRequest request, HttpServletResponse response)
 	{
 		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
@@ -108,7 +175,93 @@ public class ClientServlet extends HttpServlet {
 	    
 	}
 	
-	
+	private void AddNewMovie(HttpServletRequest request,HttpServletResponse response)
+	{
+		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 String queryMS = "select * from MovieStar";
+		 //String queryStudio = "select * from Studio";
+		 OResultSet rsCast = db.query(queryMS);
+		 //OResultSet rsStudio = db.query(queryStudio);
+		 ArrayList CastResult = new ArrayList();
+		 //ArrayList StudioResult = new ArrayList();
+		 
+		 while(rsCast.hasNext())
+		 {
+			 OResult item = rsCast.next();
+			 String Name = item.getProperty("Name");
+			 String Address = item.getProperty("Address");
+			 String Gender = item.getProperty("Gender");
+			 String BirthDate = item.getProperty("BirthDate").toString();
+			 String StarID = item.getProperty("StarID");
+			 
+			 MovieStar ms = new MovieStar(StarID, Name, Address, Gender, BirthDate);
+			 CastResult.add(ms);
+			 
+		 }
+		
+		 db.close();
+		 orient.close(); 
+		request.setAttribute("ListOfMovies",CastResult);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("AddNewMovie.jsp");
+		try {
+			dispatcher.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void deleteMovie(HttpServletRequest request,HttpServletResponse response)
+	{
+		String title = request.getParameter("Title").toString();
+		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 
+		String query = "DELETE VERTEX Movie WHERE Title =  " + title;
+		 
+		
+		try {
+			 db.command(query);
+			 db.close();
+			 orient.close();
+			response.sendRedirect("/OrientDBClient3/MoviesList");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+	public void insertNewMovie(HttpServletRequest request,HttpServletResponse response)
+	{
+		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		 
+		 String title = request.getParameter("Title");
+		 String Year = request.getParameter("Year");
+		 String Genre = request.getParameter("Genre");
+		 String Length = request.getParameter("Length");
+		 String[] Cast = request.getParameterValues("Cast");
+		 
+		 
+		 OVertex newMovie = db.newVertex("Movie");
+		 newMovie.setProperty("Title", title);
+		 newMovie.setProperty("Year", Year);
+		 newMovie.setProperty("Length", Length);
+		 newMovie.setProperty("Genre", Genre);
+		 newMovie.save();
+		 db.close();
+		 orient.close(); 
+		 MovieCastAss(Cast,title);
+		 
+		 try {
+			response.sendRedirect("/OrientDBClient3/MoviesList");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		 
+				
+	}
 	private void AddNewMovieStar(HttpServletRequest request,HttpServletResponse response) {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("AddNewStar.jsp");
         try {
@@ -137,9 +290,11 @@ public class ClientServlet extends HttpServlet {
 		 newStar.setProperty("BirthDate", StarBD);
 		 newStar.setProperty("StarID", uniqueID);
 		 newStar.save();
+		 db.close();
+		 orient.close();
 		 
 		 try {
-			response.sendRedirect("/OrientDBClient3");
+			response.sendRedirect("/OrientDBClient3/ListOfStars");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -205,20 +360,21 @@ public class ClientServlet extends HttpServlet {
 			}
 		 
 	}
-	
+		
 	private void deleteMovieStar(HttpServletRequest request,HttpServletResponse response)
 	{
 		String SID = request.getParameter("StarID").toString();
-		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
-		 ODatabaseSession db =  orient.open("Movies","root","root12345");
+		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		ODatabaseSession db =  orient.open("Movies","root","root12345");
 		 
-		 String query = "DELETE VERTEX MovieStar WHERE StarID =  " + SID;
+		String query = "DELETE VERTEX MovieStar WHERE StarID =  " + SID;
 		 
-		 db.command(query);
-		 db.close();
-		 orient.close();
-		 try {
-				response.sendRedirect("/OrientDBClient3");
+		
+		try {
+			 db.command(query);
+			 db.close();
+			 orient.close();
+			response.sendRedirect("/OrientDBClient3/ListOfStars");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -226,6 +382,69 @@ public class ClientServlet extends HttpServlet {
 		
 		
 		
+	}
+	private void MovieCastAss(String[] Cast,String title)
+	{
+		for(int i=0; i< Cast.length; i++)
+			
+		 { 
+			OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+			ODatabaseSession db =  orient.open("Movies","root","root12345");
+			String query = "Create edge Casts from (select * from MovieStar where StarID=\'"+Cast[i]+"\')"
+			 		+ " to (select * from Movie where Title = \'"+title+"\')";
+			db.command(query);
+			db.close();
+			orient.close(); 
+		 }
+		
+		
+	}
+	private void MovieDetail(HttpServletRequest request,HttpServletResponse response)
+	{
+		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		ODatabaseSession db =  orient.open("Movies","root","root12345");
+		String moveTitle = request.getParameter("Title");
+		String query = "Select * From Movie where Title = "+moveTitle;
+		Movie selectedMovie = new Movie();
+		OResultSet rs = db.query(query);
+		while(rs.hasNext())
+		{
+		OResult item =  rs.next();
+		selectedMovie.Title = item.getProperty("Title");
+		selectedMovie.Year = item.getProperty("Year");
+		selectedMovie.Genre = item.getProperty("Genre");
+		selectedMovie.Length = item.getProperty("Length");
+		}
+		request.setAttribute("SelectedMovie", selectedMovie);
+		request.setAttribute("CastsName", getCastesForMovie(moveTitle));
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("MovieDetail.jsp");
+	    try {
+			dispatcher.forward(request, response);
+		} catch (ServletException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.close();
+		orient.close(); 
+	}
+	
+	private ArrayList<String> getCastesForMovie(String moveTitle)
+	{
+		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+		ODatabaseSession db =  orient.open("Movies","root","root12345");
+		
+		String castsQuery = "Select expand(in(Casts))from Movie where Title="+ moveTitle;
+		OResultSet castsResult = db.command(castsQuery);
+		ArrayList<String> castsName = new ArrayList<String>();
+		while(castsResult.hasNext()) {
+			OResult cast = castsResult.next();
+			castsName.add(cast.getProperty("Name").toString());
+		
+		}
+		db.close();
+		orient.close();
+		
+		return castsName;
 	}
 	
 }

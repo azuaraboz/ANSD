@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>OrientDBClient3</groupId>
   <artifactId>OrientDBClient3</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>

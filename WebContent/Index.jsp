@@ -1,4 +1,3 @@
-<%@page import="OrientDBClient.MovieStar"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -92,49 +91,14 @@
 			<main>
 				<div id="content">
 					<div class="innertube">
-	<h2>
-            <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3">List All Movie Stars</a>
-             
-       </h2>
-       <% MovieStar ms = (MovieStar)request.getAttribute("StarToEdit"); %>
-       <form action="/OrientDBClient3/update" method="post">
-       <input type="hidden" value="<% out.print(ms.StarID); %>" name="StarID">
-       <table>
-       <tr>
-       <td><label>Star Name:</label></td>
-       <td><input type="text" name="Name" value="<% out.print(ms.Name); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Address:</label></td>
-       <td><input type="text" name="Address" value="<% out.print(ms.Address); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Gender:</label></td>
-       <td>
-       <select name="Gender">
-       <option value="null">------------ Select ------------</option>
-       	<option value="M">Male</option>
-       	<option value="F">Female</option>
-       </select>
+		<h1>Index Page:</h1>
+		<h3>Where Do you want  to go?</h3>
+		<ul>
+		<li><a href="/OrientDBClient3/MoviesList">List of Movies</a></li>
+		<li><a href="/OrientDBClient3/ListOfStars">List of Movie Stars</a></li>
+		</ul>
        
-       </td>
-       </tr>
-       <tr>
-       <td><label>Date of Birth:</label></td>
-       <td><input type="text" name="BirthDate" value="<% out.print(ms.BirthDate); %>"><br /></td>
-       </tr>
-       <tr>
-       <td>
-       </td>
-       <td>
-       <input type="Submit" value="Edit Movie Star ">
-       </td>
-       </tr>
-       </table>
-       </form>
-
+       
 					</div>
 				</div>
 			</main>
@@ -143,9 +107,8 @@
 				<div class="innertube">
 					<h3>Left heading</h3>
 					<ul>
-						<li><a href="#">List of movies</a></li>
+					<li><a href="#">List of movies</a></li>
 						<li><a href="#">List of Movie Stars</a></li>
-						
 					</ul>
 			</div>
 			</nav>
@@ -154,7 +117,7 @@
 		
 		<footer id="footer">
 			<div class="innertube">
-<!-- 				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
+				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p>
 			</div>
 		</footer>
 </body>

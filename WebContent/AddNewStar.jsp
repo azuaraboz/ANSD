@@ -94,7 +94,7 @@
 	<h2>
             <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3">List All Movie Stars</a>
+            <a href="/OrientDBClient3/ListOfStars">List All Movie Stars</a>
              
        </h2>
        
@@ -141,21 +141,8 @@
 				<div class="innertube">
 					<h3>Left heading</h3>
 					<ul>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
+						<li><a href="#">List of movies</a></li>
+						<li><a href="#">List of Movie Stars</a></li>
 					</ul>
 			</div>
 			</nav>

@@ -1,6 +1,9 @@
-<%@page import="OrientDBClient.MovieStar"%>
+<%@page import="OrientDBClient.Studio"%>
+<%@page import="java.awt.print.Printable"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="OrientDBClient.MovieStar"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -93,43 +96,58 @@
 				<div id="content">
 					<div class="innertube">
 	<h2>
-            <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
+            <a href="/OrientDBClient3/newMovieForm">Add New Movie</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3">List All Movie Stars</a>
+            <a href="/OrientDBClient3/MoviesList">List All Movies</a>
              
        </h2>
-       <% MovieStar ms = (MovieStar)request.getAttribute("StarToEdit"); %>
-       <form action="/OrientDBClient3/update" method="post">
-       <input type="hidden" value="<% out.print(ms.StarID); %>" name="StarID">
+       
+       <form action="/OrientDBClient3/insertMovie" method="post">
        <table>
        <tr>
-       <td><label>Star Name:</label></td>
-       <td><input type="text" name="Name" value="<% out.print(ms.Name); %>"></td>
+       <td><label>Title:</label></td>
+       <td><input type="text" name="Title"></td>
        </tr>
        <tr>
-       <td><label>Address:</label></td>
-       <td><input type="text" name="Address" value="<% out.print(ms.Address); %>"></td>
+       <td><label>Year:</label></td>
+       <td><input type="text" name="Year"></td>
        </tr>
        <tr>
-       <td><label>Gender:</label></td>
+       <td><label>Genre:</label></td>
        <td>
-       <select name="Gender">
+       <select name="Genre">
        <option value="null">------------ Select ------------</option>
-       	<option value="M">Male</option>
-       	<option value="F">Female</option>
+       	<option value="Comedy">Comedy</option>
+       	<option value="Action">Action</option>
+       	<option value="Drama">Drama</option>
+       	<option value="Adventure">Adventure</option>
        </select>
        
        </td>
        </tr>
        <tr>
-       <td><label>Date of Birth:</label></td>
-       <td><input type="text" name="BirthDate" value="<% out.print(ms.BirthDate); %>"><br /></td>
+       <td><label>Length:</label></td>
+       <td><input type="text" name="Length"><br /></td>
+       </tr>
+       <tr>
+       <td><label>Casts:</label></td>
+       <td>
+       <hr />
+       <% 
+   ArrayList ms = (ArrayList)request.getAttribute("ListOfMovies");  
+   for (int i = 0; i < ms.size(); i++) { 
+	   MovieStar star = (MovieStar)ms.get(i); %>  
+       <input type="checkbox" name="Cast" value="<% out.print(star.StarID);%>"><% out.print(star.Name);%><br/>
+       <!-- close the loop -->
+   <% } %>
+   <hr />
+       </td>
        </tr>
        <tr>
        <td>
        </td>
        <td>
-       <input type="Submit" value="Edit Movie Star ">
+       <input type="Submit" value="Add New Movie">
        </td>
        </tr>
        </table>
@@ -145,6 +163,7 @@
 					<ul>
 						<li><a href="#">List of movies</a></li>
 						<li><a href="#">List of Movie Stars</a></li>
+					
 						
 					</ul>
 			</div>
@@ -154,7 +173,7 @@
 		
 		<footer id="footer">
 			<div class="innertube">
-<!-- 				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
+				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p>
 			</div>
 		</footer>
 </body>

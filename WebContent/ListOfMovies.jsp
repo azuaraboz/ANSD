@@ -3,7 +3,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -80,6 +80,7 @@
 			}
 		
 		</style>
+	
 </head>
 <body>
 <header id="header">
@@ -109,8 +110,8 @@
 	<th>Birth Date</th>
 	<th>Actions</th>
 </tr>
-   <% ArrayList ms = (ArrayList)request.getAttribute("ListOfMovies");  
-   
+   <% 
+   ArrayList ms = (ArrayList)request.getAttribute("ListOfMovies");  
    for (int i = 0; i < ms.size(); i++) { 
 	   MovieStar user = (MovieStar)ms.get(i); %>  
        
@@ -120,7 +121,7 @@
        <td><% out.print(user.Address); %></td>
        <td><% out.print(user.Gender); %></td>
        <td><% out.print(user.BirthDate); %></td>
-       <td><a href="#" id = "DetailLink">Detail</a> | <a href="/OrientDBClient3/edit?StarID='<% out.print(user.StarID);%>'"> Edit</a> | <a href="/OrientDBClient3/delete?StarID='<% out.print(user.StarID);%>'" id="DeleteLink"> Delete</a></td>
+       <td><a href="/OrientDBClient3/Detail?StarID='<% out.print(user.StarID);%>'" id = "DetailLink">Detail</a> | <a href="/OrientDBClient3/edit?StarID='<% out.print(user.StarID);%>'"> Edit</a> | <a href="/OrientDBClient3/delete?StarID='<% out.print(user.StarID);%>'" id="DeleteLink"> Delete</a></td>
        <!-- close row -->
        </tr>
        <!-- close the loop -->
@@ -135,26 +136,8 @@
 				<div class="innertube">
 					<h3>Left heading</h3>
 					<ul>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-						<li><a href="#">Link 4</a></li>
-						<li><a href="#">Link 5</a></li>
+						<li><a href="#">List of movies</a></li>
+						<li><a href="#">List of Movie Stars</a></li>
 					</ul>
 					
 				</div>
@@ -164,8 +147,9 @@
 		
 		<footer id="footer">
 			<div class="innertube">
-				<p>Footer...</p>
+				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
 			</div>
 		</footer>
 </body>
 </html>
+    

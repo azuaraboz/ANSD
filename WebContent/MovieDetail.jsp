@@ -1,10 +1,14 @@
+<%@page import="OrientDBClient.Movie"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@page import="OrientDBClient.MovieStar"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
 <style type="text/css">
 		
 			body {
@@ -77,10 +81,10 @@
 			}
 		
 		</style>
-<title>Insert title here</title>
+	
 </head>
 <body>
-	<header id="header">
+<header id="header">
 			<div class="innertube">
 				<h1>The Movies DataBase</h1><br />
 				<h7>The right place to know all about Movies!!!!!</h7>
@@ -92,50 +96,44 @@
 			<main>
 				<div id="content">
 					<div class="innertube">
-	<h2>
-            <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
-            &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3">List All Movie Stars</a>
-             
-       </h2>
-       <% MovieStar ms = (MovieStar)request.getAttribute("StarToEdit"); %>
-       <form action="/OrientDBClient3/update" method="post">
-       <input type="hidden" value="<% out.print(ms.StarID); %>" name="StarID">
-       <table>
-       <tr>
-       <td><label>Star Name:</label></td>
-       <td><input type="text" name="Name" value="<% out.print(ms.Name); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Address:</label></td>
-       <td><input type="text" name="Address" value="<% out.print(ms.Address); %>"></td>
-       </tr>
-       <tr>
-       <td><label>Gender:</label></td>
-       <td>
-       <select name="Gender">
-       <option value="null">------------ Select ------------</option>
-       	<option value="M">Male</option>
-       	<option value="F">Female</option>
-       </select>
-       
-       </td>
-       </tr>
-       <tr>
-       <td><label>Date of Birth:</label></td>
-       <td><input type="text" name="BirthDate" value="<% out.print(ms.BirthDate); %>"><br /></td>
-       </tr>
-       <tr>
-       <td>
-       </td>
-       <td>
-       <input type="Submit" value="Edit Movie Star ">
-       </td>
-       </tr>
-       </table>
-       </form>
+					
+<table border="0" cellpadding="5">
+<tr>
+	<th style="display:none;">StarID</th>
+	<th>Title</th>
+	<th>Year</th>
+	<th>Genre</th>
+	<th>Length</th>
+</tr>
+   <% 
+   Movie mov = (Movie)request.getAttribute("SelectedMovie");
+   %>
+   <tr>
+   	<td><%out.print(mov.Title); %></td>
+   	<td><%out.print(mov.Year); %></td>
+   	<td><%out.print(mov.Genre); %></td>
+   	<td><%out.print(mov.Length); %></td>
+   </tr>
 
-					</div>
+   <!-- close table -->
+   </table>
+    <ul>
+   <% 
+   ArrayList casts = (ArrayList)request.getAttribute("CastsName");
+   for(int i = 0; i< casts.size(); i++ )
+   {
+	   String name = casts.get(i).toString();
+   %>
+   	
+   	<li><%out.print(name); %></li>
+	   
+  <% }%> 
+   
+   
+   
+   </ul>
+   <a href="/OrientDBClient3/MoviesList">Back to List</a>
+	</div>
 				</div>
 			</main>
 			
@@ -145,17 +143,18 @@
 					<ul>
 						<li><a href="#">List of movies</a></li>
 						<li><a href="#">List of Movie Stars</a></li>
-						
 					</ul>
-			</div>
+					
+				</div>
 			</nav>
 		
 		</div>
 		
 		<footer id="footer">
 			<div class="innertube">
-<!-- 				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
+				<p>Developers:Afonso Gouveia Antunes;Azucena del Mar Aragon Boza;Eskaif Nedal;Jinhyeon Hong;Minase Mekete Mengistu;Nasantogtokh Amarsaikhan;Raphael Cyril Esteveny;Willy Zhao</p> -->
 			</div>
 		</footer>
 </body>
 </html>
+    
