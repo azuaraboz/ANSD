@@ -112,7 +112,7 @@
        <td><label>Gender:</label></td>
        <td>
        <select name="StarGender">
-       <option value="null">------------ Select ------------</option>
+       <option value="null">--------  Select -------</option>
        	<option value="M">Male</option>
        	<option value="F">Female</option>
        </select>

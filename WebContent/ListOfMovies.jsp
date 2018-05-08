@@ -78,6 +78,28 @@
 				color: darkgreen;
 				text-decoration: none;
 			}
+			#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
 		
 		</style>
 	
@@ -98,10 +120,15 @@
 	<h2>
             <a href="/OrientDBClient3/newMovieStarForm">Add New Movie Star</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/OrientDBClient3/">List All Movie Stars</a>
+            <a href="/OrientDBClient3/ListOfStars">List All Movie Stars</a>
              
        </h2>
-<table border="1" cellpadding="5">
+ <form action = "/OrientDBClient3/ListOfStars" method="post">
+	<input type="text" name="SearchKey">
+	<input type="submit" value="Find Star by Name">
+</form>
+<hr />
+<table id="customers">
 <tr>
 	<th style="display:none;">StarID</th>
 	<th>Name</th>

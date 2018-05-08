@@ -1,6 +1,7 @@
 package OrientDBClient;
 
 import java.awt.List;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
@@ -20,7 +26,7 @@ import com.orientechnologies.orient.core.metadata.function.OFunction;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
-
+import java.io.File;
 /**
  * Servlet implementation class ClientServlet
  */
@@ -110,9 +116,22 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void ListOfMovies(HttpServletRequest request,HttpServletResponse response) {
+		String SearchKey = request.getParameter("SearchKey");
+		
+		String query = null;
+		if(SearchKey == null)
+		{
+			 query = "select * from Movie";
+			
+		}
+		else {
+			query = "select * from Movie where Title like\'%"+SearchKey+"%\'";
+		}
+		
 		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
-		 String query = "select * from Movie";
+		 
+		 
 		 OResultSet rs = db.query(query);
 		 ArrayList result = new ArrayList();
 		 while(rs.hasNext())
@@ -142,10 +161,21 @@ public class ClientServlet extends HttpServlet {
 	}
 	
 	private void listMovieStars(HttpServletRequest request, HttpServletResponse response)
-	{
-		OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
+	{ 
+		String SearchKey = request.getParameter("SearchKey");
+		String query = null;
+		
+		if(SearchKey == null)
+		{
+			query = "select * from MovieStar";
+		}
+		else {
+			query = "select * from MovieStar where Name like \'%"+SearchKey+"%'";
+		}
+		
+		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
-		 String query = "select * from MovieStar";
+		 
 		 OResultSet rs = db.query(query);
 		 ArrayList result = new ArrayList();
 		 while(rs.hasNext())
@@ -234,6 +264,7 @@ public class ClientServlet extends HttpServlet {
 	}
 	public void insertNewMovie(HttpServletRequest request,HttpServletResponse response)
 	{
+		final String UPLOAD_DIRECTORY = "C:/uploads";
 		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
 		 
@@ -252,8 +283,7 @@ public class ClientServlet extends HttpServlet {
 		 newMovie.save();
 		 db.close();
 		 orient.close(); 
-		 MovieCastAss(Cast,title);
-		 
+		 MovieCastAss(Cast,title);	
 		 try {
 			response.sendRedirect("/OrientDBClient3/MoviesList");
 		} catch (IOException e) {

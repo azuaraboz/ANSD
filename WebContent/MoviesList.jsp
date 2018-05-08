@@ -79,8 +79,31 @@
 				color: darkgreen;
 				text-decoration: none;
 			}
+	#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
 		
-		</style>
+</style>
 	
 </head>
 <body>
@@ -102,7 +125,12 @@
             <a href="/OrientDBClient3/MoviesList">List All Movies</a>
              
        </h2>
-<table border="1" cellpadding="5">
+<form action = "/OrientDBClient3/MoviesList" method="post">
+	<input type="text" name="SearchKey" width="500">
+	<input type="submit" value="Find a by Movie Title">
+</form>
+<hr />
+<table id="customers">
 <tr>
 	<th style="display:none;">StarID</th>
 	<th>Title</th>

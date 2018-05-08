@@ -102,7 +102,7 @@
              
        </h2>
        
-       <form action="/OrientDBClient3/insertMovie" method="post">
+       <form action="/OrientDBClient3/insertMovie" method="post" enctype="multipart/form-data">
        <table>
        <tr>
        <td><label>Title:</label></td>
@@ -128,6 +128,10 @@
        <tr>
        <td><label>Length:</label></td>
        <td><input type="text" name="Length"><br /></td>
+       </tr>
+       <tr>
+       <td>Movie Poster:</td>
+       <td><input type="file" name="MoviePoster"></td>
        </tr>
        <tr>
        <td><label>Casts:</label></td>
