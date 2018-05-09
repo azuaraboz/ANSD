@@ -3,16 +3,19 @@ package OrientDBClient;
 import java.awt.List;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.tomcat.util.http.fileupload.FileItemFactory;
 import org.apache.tomcat.util.http.fileupload.FileItem;
@@ -31,6 +34,7 @@ import java.io.File;
  * Servlet implementation class ClientServlet
  */
 @WebServlet("/ClientServlet")
+@MultipartConfig(maxFileSize = 16177215)    // upload file's size up to 16MB
 public class ClientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -264,16 +268,14 @@ public class ClientServlet extends HttpServlet {
 	}
 	public void insertNewMovie(HttpServletRequest request,HttpServletResponse response)
 	{
-		final String UPLOAD_DIRECTORY = "C:/uploads";
 		 OrientDB orient = new OrientDB("remote:localhost", OrientDBConfig.defaultConfig());
 		 ODatabaseSession db =  orient.open("Movies","root","root12345");
-		 
+		  
 		 String title = request.getParameter("Title");
 		 String Year = request.getParameter("Year");
 		 String Genre = request.getParameter("Genre");
 		 String Length = request.getParameter("Length");
 		 String[] Cast = request.getParameterValues("Cast");
-		 
 		 
 		 OVertex newMovie = db.newVertex("Movie");
 		 newMovie.setProperty("Title", title);
